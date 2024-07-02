@@ -3,6 +3,8 @@ package jpabook.jpashop.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="ORDERS")
@@ -12,7 +14,17 @@ public class Order {
     @Column(name="ORDER_ID")
     private Long id;
 
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name="MEMBER_ID")
+    private Member member;
+
+    @OneToOne
+    @JoinColumn(name="DELIVERY_ID")
+    private Delivery delivery;
+
+    @OneToMany(mappedBy="order")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
@@ -26,12 +38,21 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+//    public Long getMemberId() {
+//        return memberId;
+//    }
+//
+//    public void setMemberId(Long memberId) {
+//        this.memberId = memberId;
+//    }
+
+
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public LocalDateTime getOrderDate() {
